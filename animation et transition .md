@@ -5,7 +5,6 @@ Comparaison facile entre transitions et animations
 Navigation simple par onglets  
 Effets interactifs au survol et animations automatiques
 
-[animation-transition.html](https://github.com/user-attachments/files/23592396/animation-transition.html)
-
+--
 
 [animation-transition (4).html](https://github.com/user-attachments/files/23613048/animation-transition.4.html)
