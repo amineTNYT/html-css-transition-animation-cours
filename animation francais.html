@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Complet CSS - Transitions & Animations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.3;
+            font-size: 16px;
+            color: white;
+            pointer-events: none;
+            z-index: 1000;
+            text-align: right;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .watermark .name {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .summary-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .summary-btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: #e74c3c;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .tab-btn.animations {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn.animations.active {
+            background: #2ecc71;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        h3 {
+            color: #34495e;
+            margin: 20px 0 15px;
+        }
+
+        h4 {
+            color: #2c3e50;
+            margin: 15px 0 10px;
+        }
+
+        .demo-box {
+            width: 100px;
+            height: 100px;
+            background: #3498db;
+            margin: 15px auto;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .method-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .method {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .method h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .animation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 20px 0;
+        }
+
+        .animation-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .animation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .syntax-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .syntax-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .syntax-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .syntax-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .syntax-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        code {
+            background: #e8f4f8;
+            color: #2c3e50;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            border: 1px solid #bde0fe;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+
+        .example-box {
+            background: #e8f4f8;
+            border: 1px solid #bde0fe;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .timing-functions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .timing-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            transition: transform 0.3s ease;
+        }
+
+        .timing-box:hover {
+            transform: translateY(-5px);
+        }
+
+        
+        .note {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 4px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .creator-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .creator-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .github-credit {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .github-credit a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .github-credit a:hover {
+            text-decoration: underline;
+        }
+
+        /* ANIMATION KEYFRAMES */
+        
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes changementCouleur {
+            0% { background-color: #e74c3c; }
+            25% { background-color: #3498db; }
+            50% { background-color: #2ecc71; }
+            75% { background-color: #f39c12; }
+            100% { background-color: #9b59b6; }
+        }
+
+        @keyframes couleurInstant {
+            0%, 24% { background-color: red; }
+            25%, 49% { background-color: blue; }
+            50%, 74% { background-color: green; }
+            75%, 99% { background-color: orange; }
+            100% { background-color: purple; }
+        }
+
+        @keyframes couleurFluide {
+            0% { background-color: red; transform: scale(1); }
+            25% { background-color: blue; transform: scale(1.1); }
+            50% { background-color: green; transform: scale(1.2); }
+            75% { background-color: orange; transform: scale(1.1); }
+            100% { background-color: purple; transform: scale(1); }
+        }
+
+        @keyframes animationComplexe {
+            0% { 
+                background-color: #e74c3c; 
+                transform: translateX(0) rotate(0deg); 
+                border-radius: 8px;
+            }
+            25% { 
+                background-color: #3498db; 
+                transform: translateX(50px) rotate(90deg); 
+                border-radius: 30px;
+            }
+            50% { 
+                background-color: #2ecc71; 
+                transform: translateX(100px) rotate(180deg); 
+                border-radius: 50%;
+            }
+            75% { 
+                background-color: #f39c12; 
+                transform: translateX(50px) rotate(270deg); 
+                border-radius: 30px;
+            }
+            100% { 
+                background-color: #9b59b6; 
+                transform: translateX(0) rotate(360deg); 
+                border-radius: 8px;
+            }
+        }
+
+        /* ANIMATION DEMOS */
+        
+        .animation-rotation {
+            animation: rotation 3s linear infinite;
+        }
+
+        .animation-couleur {
+            animation: changementCouleur 5s infinite;
+        }
+
+        .animation-instant {
+            animation: couleurInstant 5s infinite;
+        }
+
+        .animation-fluide {
+            animation: couleurFluide 4s infinite;
+        }
+
+        .animation-complexe {
+            animation: animationComplexe 6s infinite;
+        }
+
+        .animation-delai {
+            animation: couleurFluide 3s infinite 2s;
+        }
+
+        .animation-iteration-3 {
+            animation: couleurFluide 2s 3;
+        }
+
+        .animation-alternate {
+            animation: couleurFluide 3s infinite alternate;
+        }
+
+        /* TRANSITION DEMOS */
+        
+        .transition-separate {
+            transition-property: color, margin-top, background-color;
+            transition-duration: 1s, 5s, 2s;
+        }
+
+        .transition-separate:hover {
+            color: yellow;
+            margin-top: 30px;
+            background: #9b59b6;
+        }
+
+        .transition-simple {
+            transition: all 0.5s ease;
+        }
+
+        .transition-simple:hover {
+            background: #e74c3c;
+            transform: scale(1.2);
+            border-radius: 50%;
+        }
+
+        .transition-multiple {
+            transition: background 1s, transform 2s, border-radius 0.5s;
+        }
+
+        .transition-multiple:hover {
+            background: #2ecc71;
+            transform: rotate(180deg);
+            border-radius: 50%;
+        }
+
+        .transition-delayed {
+            transition: all 1s ease 0.5s;
+        }
+
+        .transition-delayed:hover {
+            background: #f39c12;
+            transform: translateX(50px);
+        }
+
+        .transition-different-timings {
+            transition: background 1s, transform 3s, border-radius 0.5s 1s;
+        }
+
+        .transition-different-timings:hover {
+            background: #9b59b6;
+            transform: translateY(30px);
+            border-radius: 30px;
+        }
+
+        .transition-property-demo {
+            transition-property: transform, background-color;
+            transition-duration: 1s, 2s;
+            transition-timing-function: ease-in, linear;
+        }
+
+        .transition-property-demo:hover {
+            transform: scale(1.3);
+            background-color: #e67e22;
+        }
+
+        /* TIMING FUNCTION TRANSITIONS */
+        
+        .timing-ease { transition: all 2s ease; }
+        .timing-linear { transition: all 2s linear; }
+        .timing-ease-in { transition: all 2s ease-in; }
+        .timing-ease-out { transition: all 2s ease-out; }
+        .timing-ease-in-out { transition: all 2s ease-in-out; }
+
+        .timing-box:hover .demo-box {
+            transform: translateX(100px);
+            background: #e74c3c;
+        }
+
+        /* COMPLEX TRANSITION EXAMPLE */
+        
+        .transition-complex {
+            transition-property: transform, background-color;
+            transition-duration: 1.5s, 2s;
+            transition-timing-function: ease-in-out, linear;
+            transition-delay: 0.5s, 0s;
+        }
+
+        .transition-complex:hover {
+            transform: rotate(180deg) scale(1.3);
+            background-color: #2ecc71;
+        }
+
+        .transition-shorthand {
+            transition: transform 1.5s ease-in-out 0.5s, background-color 2s linear;
+        }
+
+        .transition-shorthand:hover {
+            transform: rotate(180deg) scale(1.3);
+            background-color: #2ecc71;
+        }
+
+        .explanation {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .control-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #2980b9;
+        }
+
+        .playground-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .playground-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* MOBILE RESPONSIVENESS FIXES */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                line-height: 1.3;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .nav-tabs {
+                gap: 5px;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                margin: 2px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            .demo-container {
+                gap: 15px;
+            }
+            
+            .method-comparison {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .animation-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .demo-box {
+                width: 80px;
+                height: 80px;
+                font-size: 0.8rem;
+            }
+            
+            .code-block {
+                font-size: 0.75rem;
+                padding: 10px;
+                overflow-x: auto;
+            }
+            
+            .syntax-table {
+                font-size: 0.8rem;
+            }
+            
+            .syntax-table th,
+            .syntax-table td {
+                padding: 8px;
+            }
+            
+            .timing-functions {
+                grid-template-columns: 1fr;
+            }
+            
+            .playground-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .summary-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            /* Watermark adjustments for mobile */
+            .watermark {
+                font-size: 14px;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .watermark .name {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .demo-box {
+                width: 70px;
+                height: 70px;
+                font-size: 0.7rem;
+            }
+            
+            .section {
+                padding: 12px;
+            }
+            
+            /* Watermark adjustments for very small screens */
+            .watermark {
+    color: rgba(17, 188, 137, 0.5); /* Semi-transparent black */
+    text-shadow: 1px 1px 3px rgba(98, 22, 22, 0.5); /* Light shadow for contrast */
+}
+            
+            .watermark .name {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Watermark -->
+    <div class="watermark">
+        <div class="name">amineTNYT</div>
+        <div>CSS Animations & Transitions</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Guide Complet CSS - Transitions & Animations</h1>
+            <p class="subtitle">Tout ce que vous devez savoir sur les transitions et animations CSS</p>
+            <button class="summary-btn" id="summaryBtn">Ouvrir le Guide de Syntaxe</button>
+            <div class="nav-tabs">
+                <button class="tab-btn active" data-tab="transitions">Guide des Transitions</button>
+                <button class="tab-btn animations" data-tab="animations">Guide des Animations</button>
+                <button class="tab-btn" data-tab="comparaison">Comparaison</button>
+                <button class="tab-btn" data-tab="playground">Terrain de Jeu</button>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- ONGLET TRANSITIONS -->
+            <div id="transitions" class="tab-content active">
+                <div class="section">
+                    <h2>Introduction aux Transitions CSS</h2>
+                    <p>Les transitions CSS permettent de créer des animations fluides entre les différents états d'un élément. Il existe deux méthodes principales pour les implémenter.</p>
+                    
+                    <div class="note">
+                        <strong>Rappel :</strong> Les transitions nécessitent toujours un déclencheur comme <code>:hover</code>, <code>:focus</code>, ou des changements de classe via JavaScript.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Méthode 1: Syntaxe Raccourcie (Shorthand)</h2>
+                    <p>La méthode raccourcie permet de définir toutes les propriétés de transition en une seule ligne.</p>
+
+                    <div class="method-comparison">
+                        <div class="method">
+                            <h4>Syntaxe Raccourcie</h4>
+                            <div class="code-block">
+.element {
+  transition: all 0.5s ease;
+}
+
+.element:hover {
+  background: #e74c3c;
+  transform: scale(1.2);
+  border-radius: 50%;
+}
+                            </div>
+                            <div class="demo-box transition-simple">Survolez-moi</div>
+                        </div>
+
+                        <div class="method">
+                            <h4>Structure de la Syntaxe</h4>
+                            <div class="code-block">
+transition: [property] [duration] [timing-function] [delay];
+                            </div>
+                            <div class="example-box">
+                                <div class="example-title">Exemples :</div>
+                                <code>transition: all 0.3s;</code><br>
+                                <code>transition: opacity 1s ease-in;</code><br>
+                                <code>transition: transform 0.5s ease-out 0.2s;</code><br>
+                                <code>transition: width 2s, height 1s;</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Méthode 2: Propriétés Séparées</h2>
+                    <p>Vous pouvez également définir chaque propriété de transition individuellement.</p>
+
+                    <div class="method-comparison">
+                        <div class="method">
+                            <h4>Propriétés Séparées</h4>
+                            <div class="code-block">
+.element {
+  transition-property: color, margin-top, background-color;
+  transition-duration: 1s, 5s, 2s;
+}
+
+.element:hover {
+  color: yellow;
+  margin-top: 30px;
+  background: #9b59b6;
+}
+                            </div>
+                            <div class="demo-box transition-separate">Survolez-moi</div>
+                        </div>
+
+                        <div class="method">
+                            <h4>Les Quatre Propriétés</h4>
+                            <div class="example-box">
+                                <div class="example-title">transition-property</div>
+                                <p>Définit quelles propriétés CSS seront animées</p>
+                                <code>transition-property: color, transform, opacity;</code>
+                            </div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">transition-duration</div>
+                                <p>Définit la durée de l'animation pour chaque propriété</p>
+                                <code>transition-duration: 1s, 5s, 2s;</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Important :</strong> L'ordre des durées dans <code>transition-duration</code> doit correspondre à l'ordre des propriétés dans <code>transition-property</code>.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Fonctions de Temporisation (Timing Functions)</h2>
+                    <p>Les fonctions de temporisation contrôlent la vitesse de l'animation durant sa durée.</p>
+
+                    <div class="timing-functions">
+                        <div class="timing-box">
+                            <h4>ease (par défaut)</h4>
+                            <p>Démarrage lent, rapide au milieu, fin lent</p>
+                            <div class="demo-box timing-ease">Survolez</div>
+                        </div>
+                        
+                        <div class="timing-box">
+                            <h4>linear</h4>
+                            <p>Vitesse constante du début à la fin</p>
+                            <div class="demo-box timing-linear">Survolez</div>
+                        </div>
+                        
+                        <div class="timing-box">
+                            <h4>ease-in</h4>
+                            <p>Démarrage lent, fin rapide</p>
+                            <div class="demo-box timing-ease-in">Survolez</div>
+                        </div>
+                        
+                        <div class="timing-box">
+                            <h4>ease-out</h4>
+                            <p>Démarrage rapide, fin lente</p>
+                            <div class="demo-box timing-ease-out">Survolez</div>
+                        </div>
+                        
+                        <div class="timing-box">
+                            <h4>ease-in-out</h4>
+                            <p>Démarrage et fin lents, rapide au milieu</p>
+                            <div class="demo-box timing-ease-in-out">Survolez</div>
+                        </div>
+                    </div>
+
+                    <div class="example-box">
+                        <div class="example-title">Utilisation avec les propriétés séparées :</div>
+                        <code>transition-timing-function: ease-in;</code><br>
+                        <code>transition-timing-function: ease, linear, ease-in-out;</code>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Synthèse : Les Quatre Propriétés Réduites à Une</h2>
+                    <p>Les quatre propriétés de transition peuvent être combinées en une seule déclaration dans cet ordre :</p>
+
+                    <div class="example-box">
+                        <div class="example-title">Ordre de la syntaxe raccourcie :</div>
+                        <code>transition: [property] [duration] [timing-function] [delay];</code>
+                    </div>
+
+                    <div class="method-comparison">
+                        <div class="method">
+                            <h4>Propriétés Séparées</h4>
+                            <div class="code-block">
+.element {
+  transition-property: transform, background-color;
+  transition-duration: 1.5s, 2s;
+  transition-timing-function: ease-in-out, linear;
+  transition-delay: 0.5s, 0s;
+}
+                            </div>
+                        </div>
+
+                        <div class="method">
+                            <h4>Syntaxe Raccourcie Équivalente</h4>
+                            <div class="code-block">
+.element {
+  transition: transform 1.5s ease-in-out 0.5s, 
+              background-color 2s linear;
+}
+                            </div>
+                            <div class="demo-box transition-complex">Survolez-moi</div>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Règle importante :</strong> Dans la syntaxe raccourcie, l'ordre des valeurs doit toujours être :<br>
+                        <code>property → duration → timing-function → delay</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET ANIMATIONS -->
+            <div id="animations" class="tab-content">
+                <div class="section">
+                    <h2>Introduction aux Animations CSS</h2>
+                    <p>Les animations CSS permettent de créer des effets visuels complexes en utilisant la règle <code>@keyframes</code> pour définir la séquence d'animation.</p>
+                    
+                    <div class="note">
+                        <strong>Structure de base :</strong><br>
+                        <code>@keyframes nomAnimation { ... }</code><br>
+                        <code>element { animation: nomAnimation durée timing-function délai iteration-count direction; }</code>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Animations de Base</h2>
+                    <p>Animations simples pour débuter avec les keyframes CSS.</p>
+
+                    <div class="animation-grid">
+                        <!-- Pulsation -->
+                        <div class="animation-card">
+                            <h4>Rotation</h4>
+                            <div class="demo-box animation-rotation">Rotation</div>
+                            <div class="code-block">
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.element {
+  animation: rotation 3s linear infinite;
+}
+                            </div>
+                        </div>
+
+                        <!-- Changement de couleur -->
+                        <div class="animation-card">
+                            <h4>Changement de Couleur</h4>
+                            <div class="demo-box animation-couleur">Couleurs</div>
+                            <div class="code-block">
+@keyframes changementCouleur {
+  0% { background-color: #e74c3c; }
+  25% { background-color: #3498db; }
+  50% { background-color: #2ecc71; }
+  75% { background-color: #f39c12; }
+  100% { background-color: #9b59b6; }
+}
+
+.element {
+  animation: changementCouleur 5s infinite;
+}
+                            </div>
+                        </div>
+
+                        <!-- Animation Complexe -->
+                        <div class="animation-card">
+                            <h4>Animation Complexe</h4>
+                            <div class="demo-box animation-complexe">Complexe</div>
+                            <div class="code-block">
+@keyframes animationComplexe {
+  0% { 
+    background-color: #e74c3c; 
+    transform: translateX(0) rotate(0deg); 
+  }
+  25% { 
+    background-color: #3498db; 
+    transform: translateX(50px) rotate(90deg); 
+  }
+  50% { 
+    background-color: #2ecc71; 
+    transform: translateX(100px) rotate(180deg); 
+  }
+  75% { 
+    background-color: #f39c12; 
+    transform: translateX(50px) rotate(270deg); 
+  }
+  100% { 
+    background-color: #9b59b6; 
+    transform: translateX(0) rotate(360deg); 
+  }
+}
+
+.element {
+  animation: animationComplexe 6s infinite;
+}
+                            </div>
+                        </div>
+
+                        <!-- Animation avec Délai -->
+                        <div class="animation-card">
+                            <h4>Animation avec Délai</h4>
+                            <div class="demo-box animation-delai">Délai 2s</div>
+                            <div class="code-block">
+.element {
+  animation: couleurFluide 3s infinite 2s;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Propriétés des Animations</h2>
+                    <p>Contrôlez le comportement de vos animations avec ces propriétés.</p>
+
+                    <div class="animation-grid">
+                        <!-- Itérations limitées -->
+                        <div class="animation-card">
+                            <h4>3 Itérations</h4>
+                            <div class="demo-box animation-iteration-3">3 fois</div>
+                            <div class="code-block">
+.element {
+  animation: couleurFluide 2s 3;
+}
+                            </div>
+                        </div>
+
+                        <!-- Direction alternate -->
+                        <div class="animation-card">
+                            <h4>Direction Alternate</h4>
+                            <div class="demo-box animation-alternate">Alternate</div>
+                            <div class="code-block">
+.element {
+  animation: couleurFluide 3s infinite alternate;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET COMPARAISON -->
+            <div id="comparaison" class="tab-content">
+                <div class="section">
+                    <h2>Transitions vs Animations</h2>
+                    <p>Comprendre quand utiliser les transitions et quand utiliser les animations.</p>
+
+                    <div class="method-comparison">
+                        <div class="method">
+                            <h4>Transitions CSS</h4>
+                            <ul>
+                                <li>✅ Simple à mettre en œuvre</li>
+                                <li>✅ Parfait pour les changements d'état simples</li>
+                                <li>✅ Animation automatique inverse</li>
+                                <li>❌ Pas de contrôle sur les états intermédiaires</li>
+                                <li>❌ Pas de boucle intégrée</li>
+                                <li>❌ Nécessite un déclencheur</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Cas d'utilisation :</div>
+                                <code>Boutons au survol</code><br>
+                                <code>Menus déroulants</code><br>
+                                <code>Changements de couleurs</code><br>
+                                <code>Animations simples</code>
+                            </div>
+                        </div>
+
+                        <div class="method">
+                            <h4>Animations CSS</h4>
+                            <ul>
+                                <li>✅ Contrôle total avec @keyframes</li>
+                                <li>✅ Boucles infinies possibles</li>
+                                <li>✅ Pas besoin de déclencheur</li>
+                                <li>✅ États intermédiaires personnalisables</li>
+                                <li>❌ Plus complexe à mettre en place</li>
+                                <li>❌ Pas d'animation inverse automatique</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Cas d'utilisation :</div>
+                                <code>Spinners de chargement</code><br>
+                                <code>Animations complexes</code><br>
+                                <code>Effets continus</code><br>
+                                <code>Séquences d'animation</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Recommandation :</strong> Utilisez les transitions pour les interactions utilisateur simples et les animations pour les effets visuels complexes et automatiques.
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONGLET TERRAIN DE JEU -->
+            <div id="playground" class="tab-content">
+                <div class="section">
+                    <h2>Terrain de Jeu CSS - Animations & Transitions</h2>
+                    <p>Exemples interactifs d'animations et de transitions CSS</p>
+
+                    <div class="playground-grid">
+                        <!-- ANIMATION SECTION -->
+                        <div class="method">
+                            <h2>Animations CSS</h2>
+                            <p>Créez des séquences complexes à plusieurs étapes en utilisant @keyframes.</p>
+
+                            <table class="syntax-table">
+                                <thead>
+                                    <tr>
+                                        <th>Syntaxe d'Animation</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>@keyframes nom { 0% {} 100% {} }</code></td>
+                                        <td>Définir la séquence d'animation</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>animation: nom 2s ease 1s 3 alternate</code></td>
+                                        <td>Raccourci: nom, durée, temporisation, délai, itération, direction</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>animation-name: slideIn</code></td>
+                                        <td>Spécifier quelles @keyframes utiliser</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>animation-duration: 2s</code></td>
+                                        <td>Durée d'un cycle</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>animation-delay: 1s</code></td>
+                                        <td>Délai avant le début</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>animation-iteration-count: 3</code></td>
+                                        <td>Nombre de répétitions (infinite pour infinie)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Changements de Couleur Instantanés</h3>
+                            <p>Utilisation de pourcentages qui se chevauchent pour des changements de couleur instantanés :</p>
+                            <div class="demo-box animation-instant">Couleurs Instantanées</div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Exemple de Code :</div>
+                                <code>@keyframes couleurInstant {</code><br>
+                                <code>&nbsp;&nbsp;0%, 24% { background-color: red; }</code><br>
+                                <code>&nbsp;&nbsp;25%, 49% { background-color: blue; }</code><br>
+                                <code>&nbsp;&nbsp;50%, 74% { background-color: green; }</code><br>
+                                <code>&nbsp;&nbsp;75%, 99% { background-color: orange; }</code><br>
+                                <code>&nbsp;&nbsp;100% { background-color: purple; }</code><br>
+                                <code>}</code><br><br>
+                                <code>.element { animation: couleurInstant 5s infinite; }</code>
+                            </div>
+
+                            <h3>Changements de Couleur Progressifs</h3>
+                            <p>Keyframes standard avec des transitions fluides entre les couleurs :</p>
+                            <div class="demo-box animation-fluide">Couleurs Fluides</div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Exemple de Code :</div>
+                                <code>@keyframes couleurFluide {</code><br>
+                                <code>&nbsp;&nbsp;0% { background: red; transform: scale(1); }</code><br>
+                                <code>&nbsp;&nbsp;25% { background: blue; transform: scale(1.1); }</code><br>
+                                <code>&nbsp;&nbsp;50% { background: green; transform: scale(1.2); }</code><br>
+                                <code>&nbsp;&nbsp;75% { background: orange; transform: scale(1.1); }</code><br>
+                                <code>&nbsp;&nbsp;100% { background: purple; transform: scale(1); }</code><br>
+                                <code>}</code><br><br>
+                                <code>.element { animation: couleurFluide 4s infinite; }</code>
+                            </div>
+                        </div>
+
+                        <!-- TRANSITION SECTION -->
+                        <div class="method">
+                            <h2>Transitions CSS</h2>
+                            <p>Créez des animations fluides entre les différents états d'un élément.</p>
+
+                            <table class="syntax-table">
+                                <thead>
+                                    <tr>
+                                        <th>Syntaxe de Transition</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>transition: all 0.5s ease</code></td>
+                                        <td>Raccourci: propriété, durée, temporisation, délai</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>transition: left 5s, color 7s</code></td>
+                                        <td>Plusieurs propriétés avec la même temporisation</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>transition-property: color, transform</code></td>
+                                        <td>Quelles propriétés animer</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>transition-duration: 1s, 2s</code></td>
+                                        <td>Durée pour chaque propriété</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>transition-delay: 0s, 0.5s</code></td>
+                                        <td>Délai pour chaque propriété</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>transition-timing-function: ease</code></td>
+                                        <td>Courbe de vitesse de la transition</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Transition Simple</h3>
+                            <p>Toutes les propriétés transitionnent avec la même temporisation :</p>
+                            <div class="demo-box transition-simple">Survolez-moi</div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Exemple de Code :</div>
+                                <code>.element {</code><br>
+                                <code>&nbsp;&nbsp;transition: all 0.5s ease;</code><br>
+                                <code>}</code><br><br>
+                                <code>.element:hover {</code><br>
+                                <code>&nbsp;&nbsp;background: #e74c3c;</code><br>
+                                <code>&nbsp;&nbsp;transform: scale(1.2);</code><br>
+                                <code>&nbsp;&nbsp;border-radius: 50%;</code><br>
+                                <code>}</code>
+                            </div>
+
+                            <h3>Propriétés Multiples</h3>
+                            <p>Différentes propriétés avec des durées différentes :</p>
+                            <div class="demo-box transition-multiple">Survolez-moi</div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Exemple de Code :</div>
+                                <code>.element {</code><br>
+                                <code>&nbsp;&nbsp;transition: background 1s, transform 2s, border-radius 0.5s;</code><br>
+                                <code>}</code><br><br>
+                                <code>.element:hover {</code><br>
+                                <code>&nbsp;&nbsp;background: #2ecc71;</code><br>
+                                <code>&nbsp;&nbsp;transform: rotate(180deg);</code><br>
+                                <code>&nbsp;&nbsp;border-radius: 50%;</code><br>
+                                <code>}</code>
+                            </div>
+
+                            <h3>Transition avec Délai</h3>
+                            <p>La transition commence après un délai :</p>
+                            <div class="demo-box transition-delayed">Survolez-moi</div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Exemple de Code :</div>
+                                <code>.element {</code><br>
+                                <code>&nbsp;&nbsp;transition: all 1s ease 0.5s;</code><br>
+                                <code>}</code><br><br>
+                                <code>.element:hover {</code><br>
+                                <code>&nbsp;&nbsp;background: #f39c12;</code><br>
+                                <code>&nbsp;&nbsp;transform: translateX(50px);</code><br>
+                                <code>}</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note" style="margin: 0 30px;">
+                    <strong>Astuce :</strong> Cliquez sur n'importe quelle animation pour la mettre en pause/reprendre. Survolez les exemples de transition pour voir l'effet.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Guide Complet CSS - Transitions & Animations | Navigation par Onglets</p>
+            <button class="creator-btn" id="creatorBtn">À propos du créateur</button>
+            <div class="github-credit">
+                <p>Créé par <a href="https://github.com/amineTNYT?tab=repositories" target="_blank">amineTNYT</a> - Voir plus sur GitHub</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Gestion des onglets
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Fonction pour changer d'onglet
+            function switchTab(tabId) {
+                // Désactiver tous les onglets
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Désactiver tous les boutons
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+                
+                // Activer l'onglet sélectionné
+                document.getElementById(tabId).classList.add('active');
+                
+                // Activer le bouton correspondant
+                document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+            }
+            
+            // Ajouter les écouteurs d'événements
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+            
+            // Add play/pause functionality to animation examples
+            const animationBoxes = document.querySelectorAll('[class*="animation-"]');
+            
+            animationBoxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    if (this.style.animationPlayState === 'paused') {
+                        this.style.animationPlayState = 'running';
+                    } else {
+                        this.style.animationPlayState = 'paused';
+                    }
+                });
+            });
+            
+            // Open summary page when button is clicked
+            document.getElementById('summaryBtn').addEventListener('click', function() {
+                const summaryWindow = window.open('', '_blank');
+                summaryWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="fr">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Guide de Syntaxe - Animations & Transitions CSS</title>
+                        <style>
+                            body {
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                line-height: 1.6;
+                                color: #333;
+                                max-width: 1000px;
+                                margin: 0 auto;
+                                padding: 20px;
+                                background: #f5f7fa;
+                            }
+                            header {
+                                text-align: center;
+                                margin-bottom: 30px;
+                                padding-bottom: 20px;
+                                border-bottom: 2px solid #3498db;
+                            }
+                            h1 {
+                                color: #2c3e50;
+                                margin-bottom: 10px;
+                            }
+                            h2 {
+                                color: #34495e;
+                                margin-top: 30px;
+                                padding-bottom: 10px;
+                                border-bottom: 1px solid #bdc3c7;
+                            }
+                            h3 {
+                                color: #2c3e50;
+                                margin-top: 25px;
+                            }
+                            .section {
+                                background: white;
+                                border-radius: 8px;
+                                padding: 20px;
+                                margin: 20px 0;
+                                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+                            }
+                            .syntax-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 15px 0;
+                                background: white;
+                                border-radius: 8px;
+                                overflow: hidden;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                            }
+                            .syntax-table th {
+                                background: #34495e;
+                                color: white;
+                                padding: 12px;
+                                text-align: left;
+                                font-weight: 600;
+                            }
+                            .syntax-table td {
+                                padding: 12px;
+                                border-bottom: 1px solid #e0e0e0;
+                            }
+                            .syntax-table tr:last-child td {
+                                border-bottom: none;
+                            }
+                            .syntax-table tr:nth-child(even) {
+                                background: #f8f9fa;
+                            }
+                            code {
+                                background: #e8f4f8;
+                                color: #2c3e50;
+                                padding: 2px 6px;
+                                border-radius: 4px;
+                                font-family: 'Courier New', monospace;
+                                font-size: 0.9rem;
+                                border: 1px solid #bde0fe;
+                            }
+                            .example-box {
+                                background: #e8f4f8;
+                                border: 1px solid #bde0fe;
+                                border-radius: 8px;
+                                padding: 15px;
+                                margin: 15px 0;
+                            }
+                            .example-title {
+                                font-weight: bold;
+                                color: #2c3e50;
+                                margin-bottom: 8px;
+                            }
+                            .comparison-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 20px 0;
+                            }
+                            .comparison-table th, .comparison-table td {
+                                border: 1px solid #ddd;
+                                padding: 12px;
+                                text-align: left;
+                            }
+                            .comparison-table th {
+                                background-color: #34495e;
+                                color: white;
+                            }
+                            .comparison-table tr:nth-child(even) {
+                                background-color: #f2f2f2;
+                            }
+                            .note {
+                                background: #fff3cd;
+                                border-left: 4px solid #ffc107;
+                                padding: 10px 15px;
+                                margin: 15px 0;
+                                border-radius: 4px;
+                            }
+                            footer {
+                                text-align: center;
+                                margin-top: 40px;
+                                padding-top: 20px;
+                                border-top: 1px solid #bdc3c7;
+                                color: #7f8c8d;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <header>
+                            <h1>Guide de Syntaxe - Animations & Transitions CSS</h1>
+                            <p>Référence complète de la syntaxe et exemples</p>
+                        </header>
+                        
+                        <div class="section">
+                            <h2>Référence de la Syntaxe d'Animation</h2>
+                            
+                            <table class="syntax-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propriété</th>
+                                        <th>Syntaxe</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Keyframes</td>
+                                        <td><code>@keyframes nom { 0% {} 100% {} }</code></td>
+                                        <td>Définir la séquence d'animation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Raccourci</td>
+                                        <td><code>animation: nom 2s ease 1s 3 alternate</code></td>
+                                        <td>Toutes les propriétés en une ligne</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nom</td>
+                                        <td><code>animation-name: slideIn</code></td>
+                                        <td>Quelles @keyframes utiliser</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durée</td>
+                                        <td><code>animation-duration: 2s</code></td>
+                                        <td>Durée d'un cycle</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Temporisation</td>
+                                        <td><code>animation-timing-function: ease</code></td>
+                                        <td>Courbe de vitesse (ease, linear, etc.)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Délai</td>
+                                        <td><code>animation-delay: 1s</code></td>
+                                        <td>Délai avant le début</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Itération</td>
+                                        <td><code>animation-iteration-count: 3</code></td>
+                                        <td>Nombre de répétitions</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Direction</td>
+                                        <td><code>animation-direction: alternate</code></td>
+                                        <td>normal, reverse, alternate</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Référence de la Syntaxe de Transition</h2>
+                            
+                            <table class="syntax-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propriété</th>
+                                        <th>Syntaxe</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Raccourci</td>
+                                        <td><code>transition: all 0.5s ease</code></td>
+                                        <td>propriété, durée, temporisation, délai</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Multiple</td>
+                                        <td><code>transition: left 5s, color 7s</code></td>
+                                        <td>Plusieurs propriétés avec temporisation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Propriété</td>
+                                        <td><code>transition-property: color, transform</code></td>
+                                        <td>Quelles propriétés animer</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durée</td>
+                                        <td><code>transition-duration: 1s, 2s</code></td>
+                                        <td>Durée pour chaque propriété</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Délai</td>
+                                        <td><code>transition-delay: 0s, 0.5s</code></td>
+                                        <td>Délai pour chaque propriété</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Temporisation</td>
+                                        <td><code>transition-timing-function: ease</code></td>
+                                        <td>Fonction de courbe de vitesse</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Animation vs Transition</h2>
+                            
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Caractéristique</th>
+                                        <th>Animation</th>
+                                        <th>Transition</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Déclencheur</td>
+                                        <td>Automatique ou JavaScript</td>
+                                        <td>Changement d'état (hover, focus, etc.)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Complexité</td>
+                                        <td>Keyframes multiples avec contrôle précis</td>
+                                        <td>Changements d'état simples A → B</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bouclage</td>
+                                        <td>Oui (infini ou un nombre spécifique)</td>
+                                        <td>Pas de bouclage intégré</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Retour automatique</td>
+                                        <td>Configurable avec animation-direction</td>
+                                        <td>Revient automatiquement lorsque le déclencheur se termine</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Idéal pour</td>
+                                        <td>Spinners de chargement, séquences complexes</td>
+                                        <td>Effets de survol, états de focus</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="section">
+                            <h2>Valeurs Courantes</h2>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Fonctions de Temporisation :</div>
+                                <code>ease | ease-in | ease-out | ease-in-out | linear | step-start | step-end | steps() | cubic-bezier()</code>
+                            </div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Nombre d'Itérations d'Animation :</div>
+                                <code>infinite | 1 | 2 | 3 | 0.5</code>
+                            </div>
+                            
+                            <div class="example-box">
+                                <div class="example-title">Direction de l'Animation :</div>
+                                <code>normal | reverse | alternate | alternate-reverse</code>
+                            </div>
+                            
+                            <div class="note">
+                                <strong>Note :</strong> Les transitions fonctionnent mieux pour des changements d'état simples, tandis que les animations sont meilleures pour des séquences complexes à plusieurs étapes.
+                            </div>
+                        </div>
+                        
+                        <footer>
+                            <p>Guide de Syntaxe - Animations & Transitions CSS | Guide de Référence</p>
+                        </footer>
+                    </body>
+                    </html>
+                `);
+                summaryWindow.document.close();
+            });
+            
+            // Creator button functionality
+            document.getElementById('creatorBtn').addEventListener('click', function() {
+                alert("Hello! I'm the creator of this page. I did this whole thing by myself! I would appreciate your help if you go to my GitHub page and share with others: amineTNYT https://github.com/amineTNYT");
+            });
+        });
+    </script>
+</body>
+</html>
